@@ -1,6 +1,7 @@
 import { Response,Request } from "express"
-import { contentModel } from "../models/user"
+import { contentModel, linkModel } from "../models/user"
 import { random } from "../lib/utils/random"
+import { hash } from "bcrypt"
 
 
 export const content =async(req:Request ,res:Response):Promise<any>=>{
@@ -65,8 +66,50 @@ export const dltContent =async(req:Request ,res:Response):Promise<any> =>{
 
 
 
-export const shareContent =async(req:Request ,res:Response) =>{
+export const shareContent =async(req:Request ,res:Response):Promise<any> =>{
     const {share} =req.body
 
-    
+    try {
+        if(share){
+        const existingLink = await linkModel.findOne({userId:req.user?._id})
+
+        if(existingLink){
+            return res.json({
+                hash: existingLink.hash
+            })
+        }
+
+
+        const hash = random(10)
+        const userLink = new linkModel({
+            userId:req.user?._id,
+            hash:hash
+        })
+       if(userLink){
+        await userLink.save()
+        return res.status(200).json({
+            message:"link created",
+            hash:hash
+        })
+       }
+       else{
+        return res.status(400).json({
+            message:"error in creating link"
+        })
+       }
+
+    }
+    else{
+        await linkModel.deleteOne({userId:req.user?._id})
+        res.json({
+            message:"link removed"
+        })
+    }
+    } catch (error) {
+        console.log("error while creating a link",error)
+        return res.status(500).json({
+            message:"Internal server error"
+        })
+    }
+
 }
