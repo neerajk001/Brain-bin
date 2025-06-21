@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/controller/auth.controller.ts","./src/controller/content.controller.ts","./src/db/dbconnect.ts","./src/lib/utils/generatecookie.ts","./src/lib/utils/random.ts","./src/middleware/protectedroutes.ts","./src/models/user.ts","./src/routes/auth.route.ts","./src/routes/content.routes.ts","./src/types/express/index.d.ts"],"version":"5.8.3"}
