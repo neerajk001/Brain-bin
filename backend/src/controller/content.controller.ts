@@ -2,6 +2,7 @@ import { Response,Request } from "express"
 import { contentModel, linkModel } from "../models/user"
 import { random } from "../lib/utils/random"
 import { hash } from "bcrypt"
+import { userModel } from "../models/user"
 
 
 export const content =async(req:Request ,res:Response):Promise<any>=>{
@@ -66,7 +67,7 @@ export const dltContent =async(req:Request ,res:Response):Promise<any> =>{
 
 
 
-export const shareContent =async(req:Request ,res:Response):Promise<any> =>{
+export const linkContent =async(req:Request ,res:Response):Promise<any> =>{
     const {share} =req.body
 
     try {
@@ -111,5 +112,26 @@ export const shareContent =async(req:Request ,res:Response):Promise<any> =>{
             message:"Internal server error"
         })
     }
+
+}
+
+export const shareContent = async(req:Request ,res:Response):Promise<any>=>{
+    const hash =req.params.shareLink
+    const link = await linkModel.findOne({hash})
+
+    if(!link){
+        return res.status(400).json({
+            message:"incorrect share link inputs "
+        })
+    }
+
+    const content =await contentModel.find({userId:link.userId})
+    const user =await userModel.findById(link.userId)
+
+    if (!user) {
+    res.status(411).json({ message: "user not found, error should ideally not happen" });
+    return;
+  }
+   res.json({ username: user.username, content });
 
 }
