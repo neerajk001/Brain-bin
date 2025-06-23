@@ -116,3 +116,13 @@ export const signin = async (req:Request, res:Response):Promise<any>=>{
 
 }
 
+export const logout = async (req:Request, res:Response):Promise<any> => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+
+  return res.status(200).json({ message: "Logged out successfully" });
+}
+
