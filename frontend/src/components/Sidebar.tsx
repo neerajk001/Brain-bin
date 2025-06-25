@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Brain, Youtube, Instagram, Twitter, File, LogOut, Image } from "lucide-react";
 import { authStore } from "../store/authStore";
 
