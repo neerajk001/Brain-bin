@@ -1,8 +1,16 @@
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
 import { Link } from "react-router-dom"
+import { authStore } from "../store/authStore"
+import toast from "react-hot-toast"
+import { Loader2 } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+
 
 export default function SignupPage() {
+  
+
+ const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     username: "",
@@ -10,14 +18,34 @@ export default function SignupPage() {
     password: "",
   })
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+
+  const { signup, isLoading } = authStore()
+  console.log("signup function:", signup)
+
+  const validateForm = () => {
+    if (!formData.username.trim()) return toast.error("username is required")
+    if (!formData.email.trim()) return toast.error("email is required")
+    if (!formData.password.trim()) return toast.error("password is required")
+    if (formData.password.length < 6) return toast.error("password is length should be 6 character or more")
+
+    return true;
   }
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log("Submitted", formData)
     // handle signup logic here
+    const success = validateForm()
+    console.log(success,"success")
+    if (success === true){
+      const result =await signup(formData)
+      if(result){
+        console.log(result)
+        navigate('/signin')
+      }
+    }
+      
   }
 
   return (
@@ -40,12 +68,10 @@ export default function SignupPage() {
               <label htmlFor="username" className="text-gray-200 block mb-1">Username</label>
               <input
                 type="text"
-                id="username"
-                name="username"
                 placeholder="Enter your username"
                 required
                 value={formData.username}
-                onChange={handleChange}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
               />
             </div>
@@ -59,7 +85,8 @@ export default function SignupPage() {
                 placeholder="Enter your email"
                 required
                 value={formData.email}
-                onChange={handleChange}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+
                 className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
               />
             </div>
@@ -74,10 +101,11 @@ export default function SignupPage() {
                   placeholder="Enter your password"
                   required
                   value={formData.password}
-                  onChange={handleChange}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+
                   className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
                 />
-                <button
+                <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute top-2 right-3 text-gray-300 hover:text-white items-center text-center"
@@ -88,10 +116,17 @@ export default function SignupPage() {
             </div>
 
             <button
-              type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
+              type="submit" disabled={isLoading}
+              className="w-full flex justify-center items-center text-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
             >
-              Create Account
+              {
+                isLoading ? (
+                  <>
+                    <Loader2 className="size-5,animate-spin" />
+                  </>
+                ) : (
+                  "create Account"
+                )}
             </button>
           </form>
 
