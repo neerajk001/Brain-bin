@@ -1,7 +1,7 @@
 import { Response,Request } from "express"
 import { contentModel, linkModel } from "../models/user"
 import { random } from "../lib/utils/random"
-import { hash } from "bcrypt"
+
 import { userModel } from "../models/user"
 
 
