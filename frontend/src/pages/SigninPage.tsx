@@ -1,22 +1,28 @@
 import { useState } from "react"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { Link } from "react-router-dom"
+import { authStore } from "../store/authStore"
+
 
 export default function SigninPage() {
+  
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
-    emailOrUsername: "",
+    identifier: "",
     password: "",
   })
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+ const {isLoading ,login} =authStore()
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log("Sign in data:", formData)
     // Handle authentication here
+      const result =await login(formData)
+      if (result) {
+  window.location.href = "/dashboard"; // 🔁 forces full reload, refetches cookies and auth
+}
+
   }
 
   return (
@@ -42,11 +48,11 @@ export default function SigninPage() {
               </label>
               <input
                 type="text"
-                id="emailOrUsername"
-                name="emailOrUsername"
+                id="identifier"
+                name="identifier"
                 placeholder="Enter your email or username"
-                value={formData.emailOrUsername}
-                onChange={handleChange}
+                value={formData.identifier}
+                onChange={(e)=>setFormData({...formData ,identifier:e.target.value})}
                 required
                 className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
               />
@@ -61,7 +67,7 @@ export default function SigninPage() {
                   name="password"
                   placeholder="Enter your password"
                   value={formData.password}
-                  onChange={handleChange}
+                 onChange={(e)=>setFormData({...formData ,password:e.target.value})}
                   required
                   className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
                 />
@@ -83,9 +89,17 @@ export default function SigninPage() {
 
             <button
               type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
+              className="w-full flex justify-center items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
             >
-              Sign In
+              {
+                isLoading ?(
+                  <>
+                    <Loader2 className="size-5 animate-spin"/>
+                  </>
+                ):(
+                    "signin"
+                )
+              }
             </button>
           </form>
 
