@@ -10,7 +10,7 @@ router.post('/content',protectedRoutes as any, content)
 router.get('/content/', protectedRoutes as any, getContent )
 router.delete('/content/:id', protectedRoutes as any, dltContent )
 router.post('/brain/share',protectedRoutes as any ,linkContent)
-router.post('/brain/:shareLink',shareContent)
+router.get('/brain/:shareLink',shareContent)
 
 
 

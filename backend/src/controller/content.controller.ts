@@ -25,7 +25,7 @@ export const content =async(req:Request ,res:Response):Promise<any>=>{
         })
 
         await userContent.save()
-        return res.status(400).json({
+        return res.status(200).json({
             message:"content added successfully",
             userContent:userContent
         })
