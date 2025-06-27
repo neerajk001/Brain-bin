@@ -91,7 +91,7 @@ function Dashboard() {
         </button>
         
         {/* Main content area */}
-        <div className="grid md:grid-cols-3 grid-col-1 items-center  ml-12 flex-wrap gap-4 p-4">
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 w-full ml-0 md:ml-12">
       {isLoading && <p className="text-white">Loading...</p>}
        {isLoading ? (
             <p className="text-white">Loading...</p>
