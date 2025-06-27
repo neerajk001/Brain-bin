@@ -1,1 +1,1 @@
-export const BACKEND_URL ="http://localhost:3000"
+export const BACKEND_URL = "https://brain-bin-10.onrender.com";

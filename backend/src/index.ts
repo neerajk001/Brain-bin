@@ -9,8 +9,10 @@ import cors from 'cors'
 
 const app = express()
 app.use(cors({
-  origin: "http://localhost:5173", // frontend origin
-  credentials: true,               // allow cookies / headers
+  origin: ["http://localhost:5173",
+    "https://brain-bin-iol2.vercel.app"
+   ],
+  credentials: true,              
 }));
 app.use(cookieParser())
 app.use(json())
