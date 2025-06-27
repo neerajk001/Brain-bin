@@ -18,6 +18,6 @@ export const generateAndSetCookie =(userId:String | Types.ObjectId ,res:Response
         httpOnly:true,
         secure:process.env.NODE_ENV !=="development",
         maxAge:1000*60*60*24*15, //15 days
-        sameSite:"strict"
+        sameSite:"none"
     })
 }
