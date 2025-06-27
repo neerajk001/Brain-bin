@@ -10,7 +10,8 @@ import cors from 'cors'
 const app = express()
 app.use(cors({
   origin: ["http://localhost:5173",
-    "https://brain-bin-iol2.vercel.app"
+    "https://brain-bin-iol2.vercel.app",
+    "https://brain-bin-one.vercel.app"
    ],
   credentials: true,              
 }));
