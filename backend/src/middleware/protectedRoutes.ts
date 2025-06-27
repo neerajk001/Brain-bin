@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 
 export const protectedRoutes =async(req:Request,res:Response,next:NextFunction)=>{
-
+     console.log("COOKIES RECEIVED:", req.cookies);
     interface JwtPayload {
   userId: string;
 }

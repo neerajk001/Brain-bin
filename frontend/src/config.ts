@@ -1,1 +1,1 @@
-export const BACKEND_URL = "https://brain-bin-10.onrender.com";
+export const BACKEND_URL ="https://brain-bin-10.onrender.com"
