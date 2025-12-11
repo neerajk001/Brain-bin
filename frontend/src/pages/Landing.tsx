@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 const Landing = () => {
   const bentoGridRef = useRef<HTMLDivElement>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -47,17 +49,63 @@ const Landing = () => {
             <i className="fa-solid fa-brain text-[#1DB954]"></i> BrainBin
           </Link>
 
-          <ul className="flex gap-7 list-none md:hidden lg:flex">
+          {/* Desktop Navigation */}
+          <ul className="hidden lg:flex gap-7 list-none">
             <li><a href="#features" className="text-gray-400 no-underline text-[0.95rem] font-medium hover:text-[#1DB954] transition-colors">Features</a></li>
             <li><a href="#pricing" className="text-gray-400 no-underline text-[0.95rem] font-medium hover:text-[#1DB954] transition-colors">Pricing</a></li>
             <li><a href="#community" className="text-gray-400 no-underline text-[0.95rem] font-medium hover:text-[#1DB954] transition-colors">Community</a></li>
           </ul>
 
-          <Link to="/signin" className="px-5 py-2 rounded-[20px] bg-zinc-900 text-white no-underline text-[0.9rem] font-medium border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all">
+          {/* Desktop Login Button */}
+          <Link to="/signin" className="hidden lg:block px-5 py-2 rounded-[20px] bg-zinc-900 text-white no-underline text-[0.9rem] font-medium border border-zinc-800 hover:bg-zinc-800 hover:border-zinc-700 transition-all">
             Log In
           </Link>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-white hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="fixed top-[70px] left-0 w-full bg-black/95 backdrop-blur-xl border-b border-zinc-800 z-[999] lg:hidden">
+          <div className="max-w-[1200px] mx-auto px-5 py-4 flex flex-col gap-4">
+            <a 
+              href="#features" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-gray-400 no-underline text-base font-medium hover:text-[#1DB954] transition-colors py-2"
+            >
+              Features
+            </a>
+            <a 
+              href="#pricing" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-gray-400 no-underline text-base font-medium hover:text-[#1DB954] transition-colors py-2"
+            >
+              Pricing
+            </a>
+            <a 
+              href="#community" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-gray-400 no-underline text-base font-medium hover:text-[#1DB954] transition-colors py-2"
+            >
+              Community
+            </a>
+            <Link 
+              to="/signin" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full text-center px-5 py-3 rounded-full bg-[#1DB954] text-black no-underline text-base font-semibold hover:bg-[#1ed760] transition-all mt-2"
+            >
+              Log In
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* MAIN GRID */}
       <div 
