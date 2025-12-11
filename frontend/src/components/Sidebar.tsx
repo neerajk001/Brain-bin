@@ -1,8 +1,12 @@
-import React from "react";
 import { Brain, Youtube, Instagram, Twitter, File, LogOut, Image, LayoutGrid } from "lucide-react";
 import { authStore } from "../store/authStore";
 
-const Sidebar = ({ setFilter, activeFilter }) => {
+interface SidebarProps {
+  setFilter: (filter: string) => void;
+  activeFilter: string;
+}
+
+const Sidebar = ({ setFilter, activeFilter }: SidebarProps) => {
   const { logout } = authStore();
 
   const sidebarItems = [
@@ -45,7 +49,7 @@ const Sidebar = ({ setFilter, activeFilter }) => {
   ];
 
   // Helper to check if item is active
-  const isActive = (type) => {
+  const isActive = (type: string) => {
     if (!activeFilter || activeFilter === "") return type === "all";
     return activeFilter === type;
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Plus, Share2, Menu, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react';
 import { contentStore } from '../store/contentStore';
 import toast from 'react-hot-toast';
@@ -35,7 +35,8 @@ function Dashboard() {
     try {
       const shareURL = await shareContent(true);
       if (shareURL) {
-        await navigator.clipboard.writeText(shareURL);
+        const fullURL = `${window.location.origin}/share/${shareURL}`;
+        await navigator.clipboard.writeText(fullURL);
         toast.success("Link copied to clipboard!");
       }
     } catch (error) {
