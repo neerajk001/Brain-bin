@@ -1,118 +1,154 @@
-import  { useEffect, useState } from 'react'
-import Button from '../components/Button'
-import { Plus, Share2, DoorOpen, PanelRight, Menu } from 'lucide-react'
-import Sidebar from '../components/Sidebar'
-import CreateModal from '../components/CreateModal'
-import Card from '../components/Card'
-import { contentStore } from '../store/contentStore'
-import toast from 'react-hot-toast'
+import React, { useEffect, useState, useMemo } from 'react';
+import { Plus, Share2, Menu, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react';
+import { contentStore } from '../store/contentStore';
+import toast from 'react-hot-toast';
+
+// Components
+import Button from '../components/Button';
+import Sidebar from '../components/Sidebar';
+import CreateModal from '../components/CreateModal';
+import Card from '../components/Card';
 
 function Dashboard() {
-  const [openModal, setOpenmodal] = useState(false)
-  const [isOpen, setIsOpen] = useState(true)
-  const [showMobileMenu, setShowMobileMenu] = useState(false)
+  // UI State
+  const [openModal, setOpenModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [contentFilter, setContentFilter] = useState("all"); // Default to 'all' or empty string
 
-  const [contentFilter , setContentFilter] =useState("")
+  // Data Store
+  const { contents, getContents, isLoading, deleteContent, shareContent } = contentStore();
 
+  // Fetch Data on Mount
+  useEffect(() => {
+    getContents();
+  }, [getContents]);
 
+  // Memoized Filter Logic (Performance Optimization)
+  const filteredContents = useMemo(() => {
+    if (!contentFilter || contentFilter === "all") return contents;
+    return contents.filter((item) => item.type === contentFilter);
+  }, [contentFilter, contents]);
 
-  const {contents ,getContents, isLoading,deleteContent,shareContent} =contentStore()
-    const filteredContents =contentFilter ? contents.filter((item)=>item.type ===contentFilter):contents
-
-  useEffect(()=>{
-    getContents()
-  },[])
-
-  const toggleBar = () => setIsOpen(!isOpen)
-  const toggleMobileMenu = () => setShowMobileMenu(!showMobileMenu)
-
+  // Handlers
   const handleShare = async () => {
-  const shareURL = await shareContent(true); // send `false` to delete
-  if (shareURL) {
-    await navigator.clipboard.writeText(shareURL);
-    toast.success("Link copied to clipboard!");
-  }
-};
+    try {
+      const shareURL = await shareContent(true);
+      if (shareURL) {
+        await navigator.clipboard.writeText(shareURL);
+        toast.success("Link copied to clipboard!");
+      }
+    } catch (error) {
+      toast.error("Failed to generate share link");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br relative from-gray-900 via-purple-900 to-black">
-      <CreateModal open={openModal} close={() => setOpenmodal(false)} />
+    <div className="flex h-screen w-full bg-black text-white overflow-hidden">
+      
+      {/* --- Modals --- */}
+      <CreateModal open={openModal} close={() => setOpenModal(false)} />
 
-      {/* Topbar */}
-      <div className="flex justify-between items-center p-4 md:px-6">
-        <div className="text-white font-bold text-xl">Brain-Bin</div>
-
-        {/* Desktop buttons */}
-        <div className="hidden md:flex space-x-4">
-          <Button onClick={() => setOpenmodal(true)} variant="primary" startIcons={<Plus />}>
-            Add Content
-          </Button>
-          <Button onClick={handleShare}
-          variant="secondary" startIcons={<Share2 />}>
-            Share Content
-          </Button>
-        </div>
-
-        {/* Mobile menu button */}
-        <div className="md:hidden">
-          <button onClick={toggleMobileMenu} className="text-white p-2">
-            <Menu />
-          </button>
+      {/* --- Sidebar (Desktop) --- */}
+      <div 
+        className={`
+          hidden md:flex flex-col border-r border-zinc-800 bg-black transition-all duration-300 ease-in-out
+          ${isSidebarOpen ? 'w-64' : 'w-0 opacity-0 overflow-hidden'}
+        `}
+      >
+        <div className="p-4">
+           <Sidebar setFilter={setContentFilter} activeFilter={contentFilter} />
         </div>
       </div>
 
-      {/* Mobile menu buttons */}
-      {showMobileMenu && (
-        <div className="flex flex-col gap-2 px-4 md:hidden">
-          <Button onClick={() => setOpenmodal(true)} variant="primary" startIcons={<Plus />}>
-            Add Content
-          </Button>
-          <Button variant="secondary" startIcons={<Share2 />}>
-            Share Content
-          </Button>
-        </div>
-      )}
+      {/* --- Main Content Area --- */}
+      <div className="flex-1 flex flex-col h-full relative overflow-y-auto scrollbar-hide">
+        
+        {/* Top Navigation Bar */}
+        <header className="sticky top-0 z-20 flex justify-between items-center p-4 md:px-8 border-b border-zinc-800 bg-[#121212]">
+          <div className="flex items-center gap-4">
+            {/* Sidebar Toggle (Desktop) */}
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="hidden md:flex items-center justify-center p-2 rounded-lg hover:bg-zinc-800 text-gray-400 hover:text-white transition-colors"
+            >
+              {isSidebarOpen ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}
+            </button>
+            
+            <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-white to-[#1DB954] bg-clip-text text-transparent">
+              Brain-Bin
+            </h1>
+          </div>
 
-      {/* Layout wrapper */}
-      <div className="flex">
-        {/* Sidebar */}
-        {isOpen && (
-          <div className="w-64 hidden md:block transition-all duration-300">
-            <Sidebar setFilter={setContentFilter} />
+          {/* Desktop Actions */}
+          <div className="hidden md:flex items-center gap-3">
+            <Button onClick={handleShare} variant="secondary" startIcons={<Share2 size={18} />}>
+              Share
+            </Button>
+            <Button onClick={() => setOpenModal(true)} variant="primary" startIcons={<Plus size={18} />}>
+              Add Content
+            </Button>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+            className="md:hidden p-2 text-white hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            <Menu />
+          </button>
+        </header>
+
+        {/* Mobile Action Menu (Dropdown) */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden bg-[#121212] border-b border-zinc-800 p-4 flex flex-col gap-3 animate-in slide-in-from-top-2">
+            <Button onClick={() => { setOpenModal(true); setIsMobileMenuOpen(false); }} variant="primary" startIcons={<Plus />}>
+              Add Content
+            </Button>
+            <Button onClick={handleShare} variant="secondary" startIcons={<Share2 />}>
+              Share Board
+            </Button>
+            {/* Optional: Add mobile sidebar filters here if needed */}
           </div>
         )}
 
-        {/* Toggle Button */}
-        <button
-          onClick={toggleBar}
-          className="absolute top-20 left-2 z-50 text-white p-2 bg-white/10 rounded-full border border-white/30 backdrop-blur"
-        >
-          {isOpen ? <DoorOpen size={20} /> : <PanelRight size={20} />}
-        </button>
-        
-        {/* Main content area */}
-       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 w-full ml-0 md:ml-12">
-      {isLoading && <p className="text-white">Loading...</p>}
-       {isLoading ? (
-            <p className="text-white">Loading...</p>
+        {/* Content Grid */}
+        <main className="p-4 md:p-8 w-full max-w-7xl mx-auto">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            </div>
           ) : filteredContents.length === 0 ? (
-            <p className="text-white">No content found.</p>
+            <div className="flex flex-col items-center justify-center h-[50vh] text-center text-gray-400">
+              <div className="bg-zinc-900 p-4 rounded-full mb-4">
+                <Search size={32} />
+              </div>
+              <h3 className="text-lg font-medium text-white">No content found</h3>
+              <p className="max-w-xs mt-2 text-sm">
+                {contentFilter === "all" || !contentFilter 
+                  ? "Your brain bin is empty. Start by adding some content!"
+                  : `No content found for the "${contentFilter}" filter.`}
+              </p>
+            </div>
           ) : (
-            filteredContents.map((item) => (
-              <Card
-                key={item._id}
-                title={item.title}
-                type={item.type}
-                tags={item.tags}
-                link={item.link}
-                onDelete={() => {deleteContent(item._id!)}}
-              />
-            ))
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filteredContents.map((item) => (
+                <Card
+                  key={item._id}
+                  title={item.title}
+                  type={item.type}
+                  tags={item.tags}
+                  link={item.link}
+                  onDelete={() => deleteContent(item._id)}
+                />
+              ))}
+            </div>
           )}
-    </div>
+        </main>
+
       </div>
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

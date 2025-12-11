@@ -49,35 +49,35 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center space-x-2 mb-4">
-            <span className="text-2xl font-bold text-purple-500">🧠 brain-bin</span>
+            <span className="text-2xl font-bold text-[#1DB954]">🧠 brain-bin</span>
           </Link>
           <h1 className="text-2xl font-bold text-white">Create your account</h1>
-          <p className="text-gray-300 mt-2">Start building your second brain today</p>
+          <p className="text-gray-400 mt-2">Start building your second brain today</p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg p-6">
+        <div className="bg-[#121212] border border-zinc-800 rounded-2xl shadow-lg p-6">
           <h2 className="text-xl font-bold text-white mb-2">Sign Up</h2>
-          <p className="text-gray-300 text-sm mb-6">Enter your details to create a new account</p>
+          <p className="text-gray-400 text-sm mb-6">Enter your details to create a new account</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="username" className="text-gray-200 block mb-1">Username</label>
+              <label htmlFor="username" className="text-gray-300 block mb-1">Username</label>
               <input
                 type="text"
                 placeholder="Enter your username"
                 required
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-2 bg-[#2a2a2a] text-white placeholder-gray-500 border border-zinc-700 rounded-lg focus:outline-none focus:border-[#1DB954] transition-colors"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="text-gray-200 block mb-1">Email</label>
+              <label htmlFor="email" className="text-gray-300 block mb-1">Email</label>
               <input
                 type="email"
                 id="email"
@@ -87,12 +87,12 @@ export default function SignupPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
 
-                className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-2 bg-[#2a2a2a] text-white placeholder-gray-500 border border-zinc-700 rounded-lg focus:outline-none focus:border-[#1DB954] transition-colors"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="text-gray-200 block mb-1">Password</label>
+              <label htmlFor="password" className="text-gray-300 block mb-1">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -103,12 +103,12 @@ export default function SignupPage() {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
 
-                  className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 bg-[#2a2a2a] text-white placeholder-gray-500 border border-zinc-700 rounded-lg focus:outline-none focus:border-[#1DB954] transition-colors"
                 />
                 <button 
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-2 right-3 text-gray-300 hover:text-white items-center text-center"
+                  className="absolute top-2 right-3 text-gray-400 hover:text-white transition-colors items-center text-center"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -117,7 +117,7 @@ export default function SignupPage() {
 
             <button
               type="submit" disabled={isLoading}
-              className="w-full flex justify-center items-center text-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
+              className="w-full flex justify-center items-center text-center bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold py-3 rounded-full shadow-md transition-all"
             >
               {
                 isLoading ? (
@@ -131,16 +131,16 @@ export default function SignupPage() {
           </form>
 
           <div className="text-center mt-6">
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-400">
               Already have an account?{" "}
-              <Link to="/signin" className="text-purple-400 hover:text-purple-300 font-medium">
+              <Link to="/signin" className="text-[#1DB954] hover:text-[#1ed760] font-medium transition-colors">
                 Sign in
               </Link>
             </p>
           </div>
         </div>
 
-        <p className="text-xs text-gray-400 text-center mt-4">
+        <p className="text-xs text-gray-500 text-center mt-4">
           By creating an account, you agree to our Terms of Service and Privacy Policy.
         </p>
       </div>

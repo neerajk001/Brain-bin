@@ -39,13 +39,13 @@ function CreateModal({ open, close }: CreateModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
-      <div className="bg-white/20 backdrop-blur-xl rounded-2xl p-6 w-[90%] max-w-md shadow-2xl border border-white/30">
+    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-center items-center">
+      <div className="bg-[#121212] rounded-2xl p-6 w-[90%] max-w-md shadow-2xl border border-zinc-800">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-lg font-semibold text-white">Add your content</h1>
           <button
             onClick={close}
-            className="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded-full font-bold text-lg"
+            className="text-white bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded-full font-bold text-lg transition-colors"
           >
             ×
           </button>
@@ -56,37 +56,37 @@ function CreateModal({ open, close }: CreateModalProps) {
             onChange={(e) => setTitle(e.target.value)}
             type="text"
             placeholder="Title"
-            className="bg-white/10 border border-white/30 px-4 py-2 rounded text-white placeholder-white/70"
+            className="bg-[#2a2a2a] border border-zinc-700 px-4 py-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#1DB954] transition-colors"
           />
           <input
             value={link}
             onChange={(e) => setLink(e.target.value)}
             type="text"
             placeholder="Link"
-            className="bg-white/10 border border-white/30 px-4 py-2 rounded text-white placeholder-white/70"
+            className="bg-[#2a2a2a] border border-zinc-700 px-4 py-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#1DB954] transition-colors"
           />
           <input
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             type="text"
             placeholder="Tags (comma separated)"
-            className="bg-white/10 border border-white/30 px-4 py-2 rounded text-white placeholder-white/70"
+            className="bg-[#2a2a2a] border border-zinc-700 px-4 py-2 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#1DB954] transition-colors"
           />
           <select
             value={type}
             onChange={(e) => setType(e.target.value as ContentType)}
-            className="bg-white/10 border border-white/30 px-4 py-2 rounded text-white placeholder-white/70 backdrop-blur-md appearance-none"
+            className="bg-[#2a2a2a] border border-zinc-700 px-4 py-2 rounded-lg text-white focus:outline-none focus:border-[#1DB954] transition-colors appearance-none cursor-pointer"
           >
-            <option className="bg-[#1f1f1f] text-white" value="youtube">YouTube</option>
-            <option className="bg-[#1f1f1f] text-white" value="instagram">Instagram</option>
-            <option className="bg-[#1f1f1f] text-white" value="twitter">Twitter</option>
-            <option className="bg-[#1f1f1f] text-white" value="images">Images</option>
-            <option className="bg-[#1f1f1f] text-white" value="documents">Documents</option>
+            <option className="bg-[#121212] text-white" value="youtube">YouTube</option>
+            <option className="bg-[#121212] text-white" value="instagram">Instagram</option>
+            <option className="bg-[#121212] text-white" value="twitter">Twitter</option>
+            <option className="bg-[#121212] text-white" value="images">Images</option>
+            <option className="bg-[#121212] text-white" value="documents">Documents</option>
           </select>
 
           <button
             onClick={handleSubmit}
-            className="bg-blue-600 flex justify-center items-center hover:bg-blue-700 text-white py-2 rounded-full mt-2 font-semibold"
+            className="bg-[#1DB954] flex justify-center items-center hover:bg-[#1ed760] text-black py-3 rounded-full mt-2 font-semibold transition-all"
             type="submit"
             disabled={isLoading}
           >

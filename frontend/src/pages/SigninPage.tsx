@@ -26,24 +26,24 @@ export default function SigninPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center space-x-2 mb-4">
-            <span className="text-2xl font-bold text-purple-500">🧠 brain-bin</span>
+            <span className="text-2xl font-bold text-[#1DB954]">🧠 brain-bin</span>
           </Link>
           <h1 className="text-2xl font-bold text-white">Welcome back</h1>
-          <p className="text-gray-300 mt-2">Sign in to access your second brain</p>
+          <p className="text-gray-400 mt-2">Sign in to access your second brain</p>
         </div>
 
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg p-6">
+        <div className="bg-[#121212] border border-zinc-800 rounded-2xl shadow-lg p-6">
           <h2 className="text-xl font-bold text-white mb-2">Sign In</h2>
-          <p className="text-gray-300 text-sm mb-6">Enter your credentials to access your account</p>
+          <p className="text-gray-400 text-sm mb-6">Enter your credentials to access your account</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="emailOrUsername" className="text-gray-200 block mb-1">
+              <label htmlFor="emailOrUsername" className="text-gray-300 block mb-1">
                 Email or Username
               </label>
               <input
@@ -54,12 +54,12 @@ export default function SigninPage() {
                 value={formData.identifier}
                 onChange={(e)=>setFormData({...formData ,identifier:e.target.value})}
                 required
-                className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
+                className="w-full px-4 py-2 bg-[#2a2a2a] text-white placeholder-gray-500 border border-zinc-700 rounded-lg focus:outline-none focus:border-[#1DB954] transition-colors"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="text-gray-200 block mb-1">Password</label>
+              <label htmlFor="password" className="text-gray-300 block mb-1">Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -69,12 +69,12 @@ export default function SigninPage() {
                   value={formData.password}
                  onChange={(e)=>setFormData({...formData ,password:e.target.value})}
                   required
-                  className="w-full px-4 py-2 bg-white/10 text-white placeholder-gray-400 border border-white/20 rounded-lg focus:outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 bg-[#2a2a2a] text-white placeholder-gray-500 border border-zinc-700 rounded-lg focus:outline-none focus:border-[#1DB954] transition-colors"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute top-2 right-3 text-gray-300 hover:text-white"
+                  className="absolute top-2 right-3 text-gray-400 hover:text-white transition-colors"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -82,14 +82,14 @@ export default function SigninPage() {
             </div>
 
             <div className="flex items-center justify-between">
-              <Link to="/forgot-password" className="text-sm text-purple-400 hover:text-purple-300">
+              <Link to="/forgot-password" className="text-sm text-gray-400 hover:text-[#1DB954] transition-colors">
                 Forgot password?
               </Link>
             </div>
 
             <button
               type="submit"
-              className="w-full flex justify-center items-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
+              className="w-full flex justify-center items-center bg-[#1DB954] hover:bg-[#1ed760] text-black font-semibold py-3 rounded-full shadow-md transition-all"
             >
               {
                 isLoading ?(
@@ -104,20 +104,20 @@ export default function SigninPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-300">
+            <p className="text-sm text-gray-400">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-purple-400 hover:text-purple-300 font-medium">
+              <Link to="/signup" className="text-[#1DB954] hover:text-[#1ed760] font-medium transition-colors">
                 Sign up
               </Link>
             </p>
           </div>
 
           {/* Demo credentials */}
-          <div className="mt-4 p-3 bg-gray-700/50 rounded-lg border border-gray-600">
+          <div className="mt-4 p-3 bg-[#2a2a2a] rounded-lg border border-zinc-700">
             <p className="text-xs text-gray-300 font-medium mb-1">Demo credentials:</p>
-            <p className="text-xs text-gray-400">Email: demo@brainbin.com</p>
-            <p className="text-xs text-gray-400">Username: demouser</p>
-            <p className="text-xs text-gray-400">Password: password123</p>
+            <p className="text-xs text-gray-500">Email: demo@brainbin.com</p>
+            <p className="text-xs text-gray-500">Username: demouser</p>
+            <p className="text-xs text-gray-500">Password: password123</p>
           </div>
         </div>
       </div>

@@ -1,65 +1,117 @@
-import  { useState } from "react";
-import { Brain, Youtube, Instagram, Twitter, File, LogOut, Image } from "lucide-react";
+import React from "react";
+import { Brain, Youtube, Instagram, Twitter, File, LogOut, Image, LayoutGrid } from "lucide-react";
 import { authStore } from "../store/authStore";
 
-
-interface SidebarProps {
-  setFilter: (type: string) => void;
-}
-
-const Sidebar = ({ setFilter }: SidebarProps) => {
-  const [activeFilter, setActiveFilter] = useState("");
-
-  const {logout} =authStore()
+const Sidebar = ({ setFilter, activeFilter }) => {
+  const { logout } = authStore();
 
   const sidebarItems = [
-    { name: "All", type: "" },
-    { name: "YouTube", type: "youtube", icon: <Youtube className="text-white" />, bg: "bg-red-600" },
-    { name: "Instagram", type: "instagram", icon: <Instagram className="text-white" />, bg: "bg-gradient-to-r from-yellow-400 via-red-500 to-purple-600" },
-    { name: "Twitter", type: "twitter", icon: <Twitter className="text-white" />, bg: "bg-blue-500" },
-    { name: "Images", type: "images", icon: <Image className="text-white" />, bg: "bg-blue-800" },
-    { name: "Document", type: "documents", icon: <File className="text-white" />, bg: "bg-yellow-500" },
+    { 
+      name: "All Content", 
+      type: "all", 
+      icon: <LayoutGrid size={20} className="text-white" />, 
+      bg: "bg-gray-600" 
+    },
+    { 
+      name: "YouTube", 
+      type: "youtube", 
+      icon: <Youtube size={20} className="text-white" />, 
+      bg: "bg-red-600" 
+    },
+    { 
+      name: "Instagram", 
+      type: "instagram", 
+      icon: <Instagram size={20} className="text-white" />, 
+      bg: "bg-gradient-to-r from-yellow-400 via-red-500 to-purple-600" 
+    },
+    { 
+      name: "Twitter", 
+      type: "twitter", 
+      icon: <Twitter size={20} className="text-white" />, 
+      bg: "bg-blue-500" 
+    },
+    { 
+      name: "Images", 
+      type: "images", 
+      icon: <Image size={20} className="text-white" />, 
+      bg: "bg-indigo-600" 
+    },
+    { 
+      name: "Documents", 
+      type: "documents", 
+      icon: <File size={20} className="text-white" />, 
+      bg: "bg-amber-500" 
+    },
   ];
 
+  // Helper to check if item is active
+  const isActive = (type) => {
+    if (!activeFilter || activeFilter === "") return type === "all";
+    return activeFilter === type;
+  };
+
   return (
-    <div className="h-screen w-20 md:w-72 fixed left-0 top-0 bg-white/10 backdrop-blur-md text-white border-r border-white/20 shadow-xl rounded-r-xl transition-all duration-300">
-      {/* Logo */}
-      <div className="flex items-center justify-center md:justify-start mt-8 ml-0 md:ml-6 gap-2">
-        <Brain size={28} />
-        <span className="hidden md:inline font-bold text-xl">
-          brain <span className="text-black bg-amber-400 px-1 rounded">bin</span>
-        </span>
-      </div>
-
-      {/* Menu */}
-      <div className="mt-10 w-full px-1 md:px-4 py-3 space-y-2">
-        {sidebarItems.map(({ name, type, icon, bg }) => (
-          <div
-            key={name}
-            className={`flex items-center gap-3 py-2 px-2 md:px-4 rounded-lg cursor-pointer transition duration-200 hover:scale-105
-              ${activeFilter === type ? `${bg} text-white scale-105` : "hover:bg-gray-700/50"}
-            `}
-            onClick={() => {
-              setActiveFilter(type);
-              setFilter(type);
-            }}
-          >
-            <div className={`p-2 rounded ${bg}`}>{icon}</div>
-            <span className="hidden md:inline">{name}</span>
+    <div className="h-full w-full flex flex-col text-white">
+      
+      {/* Branding / Logo */}
+      <div className="h-20 flex items-center px-6 border-b border-zinc-800 mb-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-[#1DB954]/20 rounded-lg border border-[#1DB954]/30">
+             <Brain size={24} className="text-[#1DB954]" />
           </div>
-        ))}
-
-        {/* Logout */}
-        <div className="flex justify-center items-center w-full text-center mt-4">
-          <button
-            onClick={logout}
-            className="bg-red-600 w-full md:w-11/12 p-2 rounded-lg font-semibold text-sm md:text-base hover:scale-105 flex items-center justify-center gap-2 transition"
-          >
-            <LogOut size={20} />
-            <span className="hidden md:inline">Logout</span>
-          </button>
+          <span className="font-bold text-xl tracking-tight">
+            Brain<span className="text-black bg-[#1DB954] px-1 ml-0.5 rounded text-sm align-middle">Bin</span>
+          </span>
         </div>
       </div>
+
+      {/* Navigation Menu */}
+      <div className="flex-1 px-4 space-y-2 overflow-y-auto scrollbar-hide">
+        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-2 mt-4">
+          Filters
+        </div>
+        
+        {sidebarItems.map(({ name, type, icon, bg }) => (
+          <button
+            key={name}
+            onClick={() => setFilter(type)}
+            className={`
+              w-full flex items-center gap-3 py-3 px-3 rounded-lg transition-all duration-200 group
+              ${isActive(type) 
+                ? "bg-zinc-800 text-white border border-zinc-700" 
+                : "text-gray-400 hover:bg-zinc-900 hover:text-white border border-transparent"}
+            `}
+          >
+            <div className={`
+              p-2 rounded-lg transition-transform duration-200 group-hover:scale-110 shadow-sm
+              ${isActive(type) ? bg : "bg-zinc-800 grayscale group-hover:grayscale-0"}
+            `}>
+              {icon}
+            </div>
+            <span className="font-medium text-sm">{name}</span>
+            
+            {/* Active Indicator Dot */}
+            {isActive(type) && (
+              <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#1DB954] shadow-[0_0_8px_rgba(29,185,84,0.8)]" />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Footer / Logout */}
+      <div className="p-4 border-t border-zinc-800 mt-auto">
+        <button
+          onClick={logout}
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full 
+                     bg-zinc-900 text-gray-300 border border-zinc-800 
+                     hover:bg-red-600 hover:text-white hover:border-red-600
+                     transition-all duration-300 group"
+        >
+          <LogOut size={18} className="group-hover:-translate-x-1 transition-transform" />
+          <span className="font-semibold text-sm">Logout</span>
+        </button>
+      </div>
+
     </div>
   );
 };
