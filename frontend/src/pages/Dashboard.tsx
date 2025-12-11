@@ -140,7 +140,7 @@ function Dashboard() {
                   type={item.type}
                   tags={item.tags}
                   link={item.link}
-                  onDelete={() => deleteContent(item._id)}
+                  onDelete={() => item._id && deleteContent(item._id)}
                 />
               ))}
             </div>
